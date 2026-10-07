@@ -1,3 +1,5 @@
+version: '2.4'
+
 services:
   web:
 
@@ -6,7 +8,7 @@ services:
     container_name: nimbusdocs01
 
     ports:
-      -"8013:13"
+      - "8080:13"
 
     volumes:
       - ./web:/usr/local/apache2/htdocs

@@ -1,13 +1,9 @@
+# Imagen de Apache(Alpine)
 FROM httpd:2.4-alpine
 
-# Copiar el contenido web al DocumentRoot
-COPY web/ /var/www/html/
+#Cambiamos el puerto por defecto a uno nuevo en mi caso el 13
+RUN sed -i 's/Listen 80/Listen 13/' /usr/local/apache2/conf/httpd.conf
 
-# Copiar las configuraciones
-COPY apache/sites-available/ /usr/local/apache2/conf/extra/sites-available/
-COPY apache/sites-enabled/ /usr/local/apache2/conf/extra/sites-enabled/
+#Decirle apache que lea los extra de vhosts.conf
+RUN echo 'Include conf/extra/httpd-vhosts.conf' >> /usr/local/apache/conf/httpd.conf
 
-# Incluir las configuraciones activas en el httpd.conf principal
-RUN echo "IncludeOptional conf/extra/sites-enabled/*.conf" >> /usr/local/apache2/conf/httpd.conf
-
-EXPOSE 80

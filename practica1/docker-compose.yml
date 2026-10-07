@@ -1,0 +1,14 @@
+services:
+  web:
+
+    build: .
+
+    container_name: nimbusdocs01
+
+    ports:
+      -"8013:13"
+
+    volumes:
+      - ./web:/usr/local/apache2/htdocs
+
+      - ./apache/conf/vhosts.conf:/usr/local/apache2/conf/extra/httpd-vhosts.conf

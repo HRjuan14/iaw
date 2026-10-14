@@ -1,5 +1,5 @@
-# Imagen de Apache(Alpine)
-FROM httpd:2.4-alpine
+# Imagen oficial de Apache basada en Debian
+FROM httpd:2.4
 
 # Cambiamos el puerto por defecto a uno nuevo, en mi caso el 13
 RUN sed -i 's/Listen 80/Listen 13/' /usr/local/apache2/conf/httpd.conf

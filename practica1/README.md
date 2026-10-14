@@ -42,3 +42,39 @@ HRjuandragontech   HRshadowbyte
 ```
 
 De esta forma, las dos marcas estarán en el mismo servidor, pero cada una tendrá su propia configuración y sus propios archivos.
+
+## 4. Fase 1 - Configuracion y Pruebas
+
+### Configuración de Virtual Hosts y Seguridad
+
+1. **VirtualHost por defecto (`default.local`):** 
+   Se ha definido un VirtualHost en primera posición del fichero `vhosts.conf` configurado con `Require all denied`. Cuando una petición llega con una cabecera `Host` no reconocida (o no configurada), cae en este bloque y Apache responde inmediatamente con un estado `403 Forbidden` en lugar de responder con un sitio arbitrario.
+
+2. **Protección de recursos:**
+   - Desactivación del listado de directorios global mediante la directiva `Options -Indexes`.
+   - Protección del fichero sensible `configurar.php` dentro de la marca interna `HRshadowbyte.local` denegando el acceso explícito mediante `<Files "configurar.php"> Require all denied </Files>`.
+
+3. **Logs por marca:**
+   Cada marca gestiona sus registros en ficheros independientes (`ErrorLog` y `CustomLog combined`).
+
+### Pruebas de validación (`curl`)
+
+Se han ejecutado las siguientes comprobaciones para validar el correcto funcionamiento del servidor Apache en el puerto 8080:
+
+1. **Petición correcta a Marca 1:**
+   ```bash
+   
+   curl -H "Host: HRjuandragontech.local" http://localhost:8080
+   # Respuesta: 200 OK (Muestra el HTML de HRjuandragontech)
+   
+   curl -H "Host: HRshadowbyte.local" http://localhost:8080
+   # Respuesta: 200 OK (Muestra el HTML de HRshadowbyte)	
+
+   curl -i -H "Host: HRshadowbyte.local" http://localhost:8080/configurar.php
+   # Respuesta: HTTP/1.1 403 Forbidden
+
+   curl -i -H "Host: falso.local" http://localhost:8080
+   # Respuesta: HTTP/1.1 403 Forbidden
+   ```
+
+

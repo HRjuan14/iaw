@@ -291,11 +291,11 @@ for i in {1..15}; do curl -k -s -o /dev/null -w "%{http_code}\n" -H "Host: HRsha
 ---
 
 
-## V. Fase 3 — Diagnóstico Provocado
+# V. Fase 3 — Diagnóstico Provocado
 
 Para demostrar las capacidades de diagnóstico y análisis frente a fallos de configuración conceptuales, se han simulado y documentado dos escenarios de error en los distintos bloques de la arquitectura:
 
-### 1. Fallo en Backend Apache (Precedencia de VirtualHosts)
+## 1. Fallo en Backend Apache (Precedencia de VirtualHosts)
 
 | Síntoma observado | Hipótesis inicial | Comando de diagnóstico usado | Causa real y solución |
 | :--- | :--- | :--- | :--- |
@@ -303,7 +303,7 @@ Para demostrar las capacidades de diagnóstico y análisis frente a fallos de co
 
 ---
 
-### 2. Fallo en Frontal Nginx (Omisión de cabecera `Host` hacia el Proxy)
+## 2. Fallo en Frontal Nginx (Omisión de cabecera `Host` hacia el Proxy)
 
 | Síntoma observado | Hipótesis inicial | Comando de diagnóstico usado | Causa real y solución |
 | :--- | :--- | :--- | :--- |

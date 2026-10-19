@@ -291,3 +291,20 @@ for i in {1..15}; do curl -k -s -o /dev/null -w "%{http_code}\n" -H "Host: HRsha
 ---
 
 
+## V. Fase 3 — Diagnóstico Provocado
+
+Para demostrar las capacidades de diagnóstico y análisis frente a fallos de configuración conceptuales, se han simulado y documentado dos escenarios de error en los distintos bloques de la arquitectura:
+
+### 1. Fallo en Backend Apache (Precedencia de VirtualHosts)
+
+| Síntoma observado | Hipótesis inicial | Comando de diagnóstico usado | Causa real y solución |
+| :--- | :--- | :--- | :--- |
+| Petición con cabecera `Host: dominiofalso.local` responde con `HTTP/1.1 200 OK` mostrando la web de Marca 1, en lugar del error `403 Forbidden` esperado. | El bloque de VirtualHost por defecto (`default.local`) se ha borrado o la directiva `Require all denied` no está funcionando. | `curl -i -k -H "Host: dominiofalso.local" https://localhost` | **Causa:** En Apache, la selección del *Default VirtualHost* ante peticiones no reconocidas depende del orden de lectura de los ficheros de configuración. Al mover la definición del bloque `default.local` al final de `vhosts.conf`, el primer bloque cargado pasa a ser `HRjuandragontech.local`.<br><br>**Solución:** Colocar siempre el VirtualHost por defecto en la primera posición del archivo de configuración. |
+
+---
+
+### 2. Fallo en Frontal Nginx (Omisión de cabecera `Host` hacia el Proxy)
+
+| Síntoma observado | Hipótesis inicial | Comando de diagnóstico usado | Causa real y solución |
+| :--- | :--- | :--- | :--- |
+| Acceso por HTTPS a dominios válidos (ej. `HRshadowbyte.local`) devuelve un error `HTTP/1.1 403 Forbidden`. | El servicio Apache en el backend se ha caído o las directivas de acceso deniegan las peticiones perimetrales. | `curl -i -k -H "Host: HRshadowbyte.local" https://localhost`<br>`docker logs nginx_proxy` | **Causa:** Nginx fue configurado omitiendo la directiva `proxy_set_header Host $host;`. Por defecto, Nginx reenvía las peticiones a Apache usando el nombre interno del contenedor (`nimbusdocs01:13`) como cabecera `Host`. Como esta no coincide con ningún VirtualHost de marca, Apache asigna la petición al bloque por defecto (`default.local`), respondiendo `403 Forbidden`.<br><br>**Solución:** Incluir la directiva `proxy_set_header Host $host;` dentro de la localización del proxy en `default.conf`. |

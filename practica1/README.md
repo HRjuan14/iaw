@@ -99,6 +99,8 @@ Content-Type: text/html
 Content-Length: 193
 Connection: keep-alive
 ETag: "c1-65d3c1121caa6"
+```
+
 
 ```bash
 openssl s_client -connect localhost:443 -servername HRjuandragontech.local < /dev/null
@@ -109,13 +111,21 @@ verify error:num=18:self-signed certificate
 verify return:1
 depth=0 CN = HRjuandragontech.local, O = IAW Lab, OU = Fase2
 verify return:1
+ ```
+
 ---
+```bash
+
 Certificate chain
  0 s:CN = HRjuandragontech.local, O = IAW Lab, OU = Fase2
    i:CN = HRjuandragontech.local, O = IAW Lab, OU = Fase2
    a:PKEY: id-ecPublicKey, 384 (bit); sigalg: ecdsa-with-SHA256
    v:NotBefore: Oct 18 18:53:44 2026 GMT; NotAfter: Oct 18 18:53:44 2027 GMT
+ ```
+
 ---
+```bash
+
 Server certificate
 -----BEGIN CERTIFICATE-----
 MIICGTCCAZ6gAwIBAgIUME3uBHPGsqkepmaqsfOggD3FtKowCgYIKoZIzj0EAwIw
@@ -226,8 +236,6 @@ SSL-Session:
 read R BLOCK
 DONE
 
-
-
 ---
 Certificate chain
  0 s:CN = HRjuandragontech.local, O = IAW Lab, OU = Fase2
@@ -237,7 +245,7 @@ Certificate chain
 New, TLSv1.3, Cipher is TLS_AES_256_GCM_SHA384
 Server public key is 384 bit
 Verify return code: 18 (self-signed certificate)
-
+```
 
 
 ## IV. Fase 2 — Seguridad y Límite de Peticiones
@@ -287,8 +295,8 @@ for i in {1..15}; do curl -k -s -o /dev/null -w "%{http_code}\n" -H "Host: HRsha
 503
 200
 503
+```
 
----
 
 
 # V. Fase 3 — Diagnóstico Provocado

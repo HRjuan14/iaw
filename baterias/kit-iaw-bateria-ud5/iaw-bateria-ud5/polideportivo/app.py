@@ -76,13 +76,15 @@ def quien():
 @app.route("/pista/<int:id>")
 def pista(id):
     p = buscar_pista(id)
+    if p is None:
+        abort(404)
     # ✍️ 2.1 Si la pista no existe, un 404 de verdad (ahora sale una página vacía con un 200).
     return render_template("pista.html", pista=p)
+    
 
-
-@app.route("/reservar", methods=["GET"])   # ✍️ 2.2 El formulario se envía con POST, y esta ruta no lo acepta (405)
+@app.route("/reservar", methods=["GET" , "POST"])   # ✍️ 2.2 El formulario se envía con POST, y esta ruta no lo acepta (405)
 def reservar():
-    errores = []
+    errores = [405]
     hecha = None
     if request.method == "POST":
         nombre = request.form.get("nombre", "").strip()
@@ -92,10 +94,20 @@ def reservar():
 
         # ✍️ 2.3 Si el nombre está vacío, añade a errores: «Escribe tu nombre.»
         #        Si la hora no es un entero de 9 a 21, añade: «La hora tiene que ser un número entero de 9 a 21.»
+        if not nombre:
+            errores.append("Escribe tu nombre.")
 
+        if hora  is None or not 9 <= hora <= 21:
+            errores.append("La hora tiene que ser un numero entero de 9 a 21")
         # ✍️ 2.4 La pista. Añade a errores, según el caso:
         #        no existe → «Esa pista no existe.» · no está disponible → «Esa pista está cerrada.»
         #        ya hay una reserva de esa pista a esa hora (mira RESERVAS) → «Esa pista ya está reservada a esa hora.»
+        if pista is None:
+            errores.append("Esa pista no existe.")
+        elif not pista["disponible"]:
+            errores.append("Esa pista esta cerrada.")
+        elif any(r["pista"] == pista["id"] and r["hora"] == hora for r in RESERVAS):
+            errores.append("Esa pista ya está reservada a esa hora.")
 
         # ✍️ 2.5 Si hay errores: la misma página, con los errores y el código 422.
         #        Si no: se apunta en RESERVAS (pista, hora, nombre y comentario) y se enseña la reserva hecha.

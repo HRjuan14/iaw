@@ -1,3 +1,3 @@
 # Seguridad-y-Alta-Disponibilidad
 
-1. Practica1-Servidores-Proxies-Certificados (carpeta practica1) 
+1. Practica1-Servidores-Proxies-Certificados (carpeta practica1).

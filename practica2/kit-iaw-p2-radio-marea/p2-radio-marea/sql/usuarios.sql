@@ -10,7 +10,6 @@ GRANT SELECT ON radio.* TO 'radio_copias'@'%';
 --          La web y la API solo LEEN la parrilla y los podcasts: los permisos justos, solo en la base radio.
 --          La web y la API están en OTROS ordenadores (php, app), no en el de la base de datos.
 
-
 -- ✍️ C1.2 · root solo puede entrar desde el propio servidor de la base de datos.
 
 

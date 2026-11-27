@@ -25,8 +25,17 @@ PODCASTS_DE_PRUEBA = [
 
 # ✍️ C2 · La conexión con MariaDB (UD6, apartado 5.2): host, base, usuario y contraseña, del entorno (radio.env).
 #         Cada fila, un diccionario. Nada escrito a mano.
+# ✍️ C2 · La conexión con MariaDB (UD6, apartado 5.2): host, base, usuario y contraseña, del entorno (radio.env).
+#         Cada fila, un diccionario. Nada escrito a mano.
 def conectar():
-    raise RuntimeError("Sin hacer: conectar() (C2)")
+    return pymysql.connect(
+        host=os.environ["DB_HOST"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASS"],
+        database=os.environ["DB_NAME"],
+        charset="utf8mb4",
+        cursorclass=pymysql.cursors.DictCursor,
+    )
 
 
 # ✍️ C3 · Los podcasts de la tabla podcasts, del más nuevo al más viejo, con id, titulo, programa y minutos.
